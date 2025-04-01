@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auction.backcodestudy.product.request.ProductRequest;
+import com.auction.backcodestudy.product.request.ProductUpdateRequest;
 import com.auction.backcodestudy.product.response.ProductResponse;
 import com.auction.backcodestudy.product.service.ProductServiceImpl;
 
@@ -112,6 +114,28 @@ public class ProductController {
 			return ResponseEntity.ok(productResponse);
 		} catch (Exception e) {
 			log.info("낙찰자 할당 실패={}", e.getMessage(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	/**
+	 * @param productId
+	 * @param productUpdateRequest
+	 * @return
+	 */
+	@PutMapping
+	@Operation(summary = "상품 수정", description = "지정된 상품의 이름, 이미지, 가격 정보를 수정하는 API")
+	@ApiResponse(responseCode = "200", description = "상품 목록 조회 성공")
+	public ResponseEntity<ProductResponse> updateProduct(
+		@PathVariable("productId") Long productId,
+		@RequestBody ProductUpdateRequest productUpdateRequest
+	) {
+		try {
+			ProductResponse updateProduct = productServiceImpl.updateProduct(productId, productUpdateRequest);
+			log.info("지정된 상품의 수정 성공={}", updateProduct);
+			return ResponseEntity.ok(updateProduct);
+		} catch (Exception e) {
+			log.info("지정된 상품의 수정 실패={}", e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
