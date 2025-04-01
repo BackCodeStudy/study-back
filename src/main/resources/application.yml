@@ -16,3 +16,25 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  springdoc:
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
+    paths-to-match: /api/**
+    swagger-ui:
+      path: /api-test
+      display-request-duration: true
+      groups-order: DESC
+      operations-sorter: method
+      disable-swagger-default-url: false
+      urls:
+        - url: http://localhost:8080/v3/api-docs
+          name: BackCodeStudy API Docs
+    api-docs:
+      groups:
+        enabled: true
+
+  security:
+    user:
+      name: admin
+      password: admin
