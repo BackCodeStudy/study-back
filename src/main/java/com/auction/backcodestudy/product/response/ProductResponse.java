@@ -15,6 +15,8 @@ public class ProductResponse {
 	private BigDecimal startingPrice;
 	private LocalDateTime localDateTime;
 	private String winnerName;
+	private String status;
+	private LocalDateTime createdAt;
 
 	public ProductResponse(Product product) {
 		this.id = product.getId();
@@ -23,5 +25,11 @@ public class ProductResponse {
 		this.startingPrice = product.getStartingPrice();
 		this.localDateTime = product.getLocalDateTime();
 		this.winnerName = product.getWinner() != null ? product.getWinner().getUsername() : null;
+		this.status = calculateStatus(product);
+		this.createdAt = getCreatedAt();
+	}
+
+	private String calculateStatus(Product product) {
+		return product.getLocalDateTime().isBefore(LocalDateTime.now()) ? "Finished" : "Ongoing";
 	}
 }
