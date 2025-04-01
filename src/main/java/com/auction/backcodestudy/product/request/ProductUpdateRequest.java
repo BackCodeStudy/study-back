@@ -9,8 +9,13 @@ import lombok.Data;
  */
 @Data
 public class ProductUpdateRequest {
-	private String name;
-	/* 상품 사진을 URL이나 파일경로 등으로 처리함*/
-	private String productImage;
-	private BigDecimal startPrice;
+
+	/* 상품 이름 수정*/
+	private String fixName;
+
+	/* 상품 사진을 URL이나 파일경로 수정*/
+	private String fixProductImage;
+
+	/* 상품 가격 수정*/
+	private BigDecimal fixPrice;
 }
