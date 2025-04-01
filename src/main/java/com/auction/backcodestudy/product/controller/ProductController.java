@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.auction.backcodestudy.product.request.ProductRequest;
 import com.auction.backcodestudy.product.response.ProductResponse;
-import com.auction.backcodestudy.product.service.ProductService;
+import com.auction.backcodestudy.product.service.ProductServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProductController {
 
-	private final ProductService productService;
+	private final ProductServiceImpl productServiceImpl;
 
 	/**
 	 *
@@ -44,7 +44,7 @@ public class ProductController {
 	public ResponseEntity<ProductResponse> createProduct(
 		@RequestBody @Parameter(description = "상품 등록 정보") ProductRequest productRequest) {
 		try {
-			ProductResponse productResponse = productService.createProduct(productRequest);
+			ProductResponse productResponse = productServiceImpl.createProduct(productRequest);
 			log.info("상품 생성 성공={}", productResponse);
 			return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ public class ProductController {
 	})
 	public ResponseEntity<ProductResponse> getProduct(@PathVariable @Parameter(description = "상품 ID") Long id) {
 		try {
-			ProductResponse productResponse = productService.getProduct(id);
+			ProductResponse productResponse = productServiceImpl.getProduct(id);
 			log.info("상품 상세 조회 성공={}", productResponse);
 			return ResponseEntity.ok(productResponse);
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class ProductController {
 	@ApiResponse(responseCode = "200", description = "상품 목록 조회 성공")
 	public ResponseEntity<List<ProductResponse>> getAllProducts() {
 		try {
-			List<ProductResponse> products = productService.getAllProducts();
+			List<ProductResponse> products = productServiceImpl.getAllProducts();
 			log.info("모든 상품 목록 조회 성공={}", products);
 			return ResponseEntity.ok(products);
 		} catch (Exception e) {
@@ -108,7 +108,7 @@ public class ProductController {
 	public ResponseEntity<ProductResponse> assignWinner(@PathVariable @Parameter(description = "상품 ID") Long productId,
 		@PathVariable @Parameter(description = "사용자 ID") Long winnerId) {
 		try {
-			ProductResponse productResponse = productService.assignWinner(productId, winnerId);
+			ProductResponse productResponse = productServiceImpl.assignWinner(productId, winnerId);
 			log.info("낙찰자 할당 성공={}", productResponse);
 			return ResponseEntity.ok(productResponse);
 		} catch (Exception e) {
