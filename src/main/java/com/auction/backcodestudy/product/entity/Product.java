@@ -28,6 +28,7 @@ public class Product {
 	private LocalDateTime localDateTime;
 	private String status;
 	private LocalDateTime createdAt;
+	private String productImage;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "winner_id")

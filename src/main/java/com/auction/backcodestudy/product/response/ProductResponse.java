@@ -17,6 +17,7 @@ public class ProductResponse {
 	private String winnerName;
 	private String status;
 	private LocalDateTime createdAt;
+	private String productImage;
 
 	public ProductResponse(Product product) {
 		this.id = product.getId();
@@ -27,6 +28,7 @@ public class ProductResponse {
 		this.winnerName = product.getWinner() != null ? product.getWinner().getUsername() : null;
 		this.status = calculateStatus(product);
 		this.createdAt = getCreatedAt();
+		this.productImage = product.getProductImage();
 	}
 
 	private String calculateStatus(Product product) {
