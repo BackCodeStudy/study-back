@@ -26,6 +26,8 @@ public class Product {
 	private String description;
 	private BigDecimal startingPrice;
 	private LocalDateTime localDateTime;
+	private String status;
+	private LocalDateTime createdAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "winner_id")
