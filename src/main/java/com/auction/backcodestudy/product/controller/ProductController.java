@@ -20,10 +20,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
 	private final ProductService productService;
@@ -41,8 +43,14 @@ public class ProductController {
 	})
 	public ResponseEntity<ProductResponse> createProduct(
 		@RequestBody @Parameter(description = "상품 등록 정보") ProductRequest productRequest) {
-		ProductResponse productResponse = productService.createProduct(productRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
+		try {
+			ProductResponse productResponse = productService.createProduct(productRequest);
+			log.info("상품 생성 성공={}", productResponse);
+			return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
+		} catch (Exception e) {
+			log.info("상품 생성 실패={}", e.getCause(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	/**
@@ -57,8 +65,14 @@ public class ProductController {
 		@ApiResponse(responseCode = "404", description = "상품을 찾을 수 없음")
 	})
 	public ResponseEntity<ProductResponse> getProduct(@PathVariable @Parameter(description = "상품 ID") Long id) {
-		ProductResponse productResponse = productService.getProduct(id);
-		return ResponseEntity.ok(productResponse);
+		try {
+			ProductResponse productResponse = productService.getProduct(id);
+			log.info("상품 상세 조회 성공={}", productResponse);
+			return ResponseEntity.ok(productResponse);
+		} catch (Exception e) {
+			log.info("상품 상세 조회 실패", e.getMessage(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	/**
@@ -69,8 +83,14 @@ public class ProductController {
 	@Operation(summary = "모든 상품 목록 조회", description = "모든 경매 상품의 목록을 조회하는 API")
 	@ApiResponse(responseCode = "200", description = "상품 목록 조회 성공")
 	public ResponseEntity<List<ProductResponse>> getAllProducts() {
-		List<ProductResponse> products = productService.getAllProducts();
-		return ResponseEntity.ok(products);
+		try {
+			List<ProductResponse> products = productService.getAllProducts();
+			log.info("모든 상품 목록 조회 성공={}", products);
+			return ResponseEntity.ok(products);
+		} catch (Exception e) {
+			log.info("모든 상품 목록 조회 실패={}", e.getMessage(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	/**
@@ -87,7 +107,13 @@ public class ProductController {
 	})
 	public ResponseEntity<ProductResponse> assignWinner(@PathVariable @Parameter(description = "상품 ID") Long productId,
 		@PathVariable @Parameter(description = "사용자 ID") Long winnerId) {
-		ProductResponse productResponse = productService.assignWinner(productId, winnerId);
-		return ResponseEntity.ok(productResponse);
+		try {
+			ProductResponse productResponse = productService.assignWinner(productId, winnerId);
+			log.info("낙찰자 할당 성공={}", productResponse);
+			return ResponseEntity.ok(productResponse);
+		} catch (Exception e) {
+			log.info("낙찰자 할당 실패={}", e.getMessage(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }
